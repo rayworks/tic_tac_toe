@@ -3,6 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:tic_tac_toe/anim/cross.dart';
+import 'package:tic_tac_toe/anim/oval.dart';
 
 void main() {
   runApp(MyApp());
@@ -214,6 +216,14 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Widget _buildMaxHeightText(int row, int col) {
     String cellText = _grid[row][col];
+    Widget cell;
+    if (cellText == "O")
+      cell = OvalPaintWidget(animDurationInSec: 1);
+    else if (cellText == "X")
+      cell = CrossPaintWidget(animDurationInSec: 1);
+    else
+      cell = Text(cellText,
+          textAlign: TextAlign.center, style: TextStyle(fontSize: 24.0));
 
     return InkWell(
       onTap: () {
@@ -221,11 +231,7 @@ class _MyHomePageState extends State<MyHomePage> {
         _update(row, col);
       },
       child: Container(
-        child: Text(
-          cellText,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 24.0),
-        ),
+        child: cell,
         decoration: BoxDecoration(
             border: Border(
               top: BorderSide(width: 1.0, color: Color(0xFFDFDFDF)),
