@@ -9,6 +9,6 @@ A simple TicTacToe game powered by [Flutter](https://flutter.dev/).
 ## ToDo
 
 - [x] prototype
+- [x] add human VS. computer mode
 - [ ] support Undo/Redo
-- [ ] add human VS. computer mode
 - [ ] polish UI
