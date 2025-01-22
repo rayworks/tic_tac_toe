@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:tic_tac_toe/widgets/ChessAutoModePage.dart';
 import 'package:tic_tac_toe/widgets/home_page.dart';
 
 class ModeSelector extends StatelessWidget {
@@ -11,11 +12,15 @@ class ModeSelector extends StatelessWidget {
   }
 
   _navigateToMain(BuildContext context, bool playWithHuman) {
-    Navigator.of(context).popAndPushNamed(MyHomePage.name);
+    if (playWithHuman)
+      Navigator.of(context).pushNamed(MyHomePage.name, arguments: {});
+    else
+      Navigator.of(context).pushNamed(ChessAutoModePage.name, arguments: {});
   }
 
   Widget _buildLayout(BuildContext context) {
     return Material(
+      color: Colors.cyan,
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         ElevatedButton(
           onPressed: () => _navigateToMain(context, true),

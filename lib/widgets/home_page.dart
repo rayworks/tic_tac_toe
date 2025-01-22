@@ -2,10 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:tic_tac_toe/anim/cross.dart';
-import 'package:tic_tac_toe/anim/oval.dart';
+import 'package:tic_tac_toe/widgets/BoardBuilder.dart';
+import 'package:tic_tac_toe/widgets/widgets.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -20,7 +19,7 @@ class MyHomePage extends StatefulWidget {
 
 const String CHAR_EMPTY_CELL = " ";
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with BoardBuilder {
   var _grid = [
     List.filled(3, CHAR_EMPTY_CELL),
     List.filled(3, CHAR_EMPTY_CELL),
@@ -31,13 +30,21 @@ class _MyHomePageState extends State<MyHomePage> {
   int _nRow = 3;
   int _nCol = 3;
 
+  @override
+  String getTitle() => widget.title;
+
+  @override
+  String getCell(int row, int col) {
+    return _grid[row][col];
+  }
+
   bool isCellUpdatable(int r, int c) {
     if (r < 0 || r >= _nRow || c < 0 || c >= _nCol) return false;
 
     return _grid[r][c] == CHAR_EMPTY_CELL;
   }
 
-  Future<void> _update(int r, int c) async {
+  Future<void> updateAsync(int r, int c) async {
     if (!isCellUpdatable(r, c)) return;
 
     setState(() {
@@ -131,94 +138,11 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _showDialog(String msg, Function callback) {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.msgGameOver),
-          content: Text(msg),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  callback.call();
-                },
-                child: Text(AppLocalizations.of(context)!.btnOK))
-          ],
-        );
-      },
-    );
+    showChessResultDialog(context, msg, callback);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            _buildExpandedRow(0),
-            _buildExpandedRow(1),
-            _buildExpandedRow(2),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Expanded _buildExpandedRow(int index) {
-    return Expanded(
-      flex: 1,
-      child: Container(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: _buildRowChildren(index),
-        ),
-      ),
-    );
-  }
-
-  List<Widget> _buildRowChildren(int row) {
-    var widgets = <Widget>[];
-    for (int i = 0; i < 3; i++) {
-      widgets.add(Expanded(child: _buildMaxHeightText(row, i), flex: 1));
-    }
-    return widgets;
-  }
-
-  Widget _buildMaxHeightText(int row, int col) {
-    String cellText = _grid[row][col];
-    Widget cell;
-    if (cellText == "O")
-      cell = OvalPaintWidget(animDurationInSec: 1);
-    else if (cellText == "X")
-      cell = CrossPaintWidget(animDurationInSec: 1);
-    else
-      cell = Text(cellText,
-          textAlign: TextAlign.center, style: TextStyle(fontSize: 24.0));
-
-    return InkWell(
-      onTap: () {
-        print("you clicked position [$row, $col]");
-        _update(row, col);
-      },
-      child: Container(
-        child: cell,
-        decoration: BoxDecoration(
-            border: Border(
-              top: BorderSide(width: 1.0, color: Color(0xFFDFDFDF)),
-              left: BorderSide(width: 1.0, color: Color(0xFFDFDFDF)),
-              right: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
-              bottom: BorderSide(width: 1.0, color: Color(0xFF7F7F7F)),
-            ),
-            color: Color(0xFFBFBFBF)),
-        height: double.maxFinite,
-        alignment: Alignment.center,
-      ),
-    );
+    return buildBoard(context);
   }
 }
