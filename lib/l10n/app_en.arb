@@ -4,5 +4,8 @@
   "msgGameOver":"\uD83C\uDFAE Game over",
   "btnOK": "OK",
   "youLose": "You lose 😭",
-  "youWin" : "You win ✌️"
+  "youWin" : "You win ✌️",
+  "modeSelection": "Mode Selection",
+  "vsPlayer" : "VS. Human Player",
+  "vsComputer" : "VS. Computer"
 }

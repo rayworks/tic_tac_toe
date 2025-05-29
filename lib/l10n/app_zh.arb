@@ -4,5 +4,8 @@
   "msgGameOver":"🎮 游戏结束",
   "btnOK": "好的",
   "youLose": "你输了😭",
-  "youWin" : "你赢了✌️"
+  "youWin" : "你赢了✌️",
+  "modeSelection" : "模式选择",
+  "vsPlayer" : "人类棋手",
+  "vsComputer" : "电脑棋手"
 }
